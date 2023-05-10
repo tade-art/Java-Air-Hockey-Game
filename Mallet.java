@@ -1,6 +1,6 @@
 public class Mallet{
-    private double xPos;
-    private double yPos;
+    private double xPos = 0 ;
+    private double yPos= 0;
     private double xVelo = 0;
     private double yVelo = 0;
 
@@ -10,6 +10,8 @@ public class Mallet{
     public Mallet (double x, double y){
         mallet.setXPosition(x);
         mallet.setYPosition(y);
+        xPos = x;
+        yPos = y;
     }
 
     //Function to add it to the Arena
@@ -43,41 +45,17 @@ public class Mallet{
         yVelo = y;
     }
 
-    public void setXPos(double x){
+    public void setPos(double x , double y){
         xPos = x;
-    }
-
-    public void setYPos(double y){
         yPos = y;
     }
     
-    /* METHODS TO MOVE THE MALLET */
-    public void moveYPos(double y){
-        yPos+= y;
-    }
-   
-    public void moveXPos(double x){
-        xPos+= x;
-    }
-
+    /* METHOD TO MOVE THE MALLET */
     public void moveMallet(double xVelo , double yVelo){
+        xPos += xVelo;
+        yPos += yVelo;
         mallet.move(xVelo, yVelo);
     }
 
-    /* METHOD TO SET BOUNDARY */
-    public void setBoundary(Line top, Line left, Line right , Line bottom){
-        boolean flag = false;
-        if((mallet.getYPosition()- 35) <= 118){
-            flag = true;
-            System.out.println("in 1");
-            while(flag){
-                mallet.move(0, -10);
-                System.out.println("in 2");
-                if(mallet.getYPosition() - 35 <=top.getYStart()){flag=false;}
-                }
-            }
-        
-        else{System.out.println("Nah");}
-    }
 }
  

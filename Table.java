@@ -82,6 +82,7 @@ public class Table{
         return rightSide.getXPosition();
     }
 
+    /* METHODS TO RETURN THE WALLS AND THEIR PROPERTIES */
     public Line returnLeftWall(){
         return leftWall;
     }
