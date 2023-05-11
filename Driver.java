@@ -76,6 +76,19 @@ public class Driver{
                 player2.moveMallet(-10, 0);
             }
             
+            //Checking for collisions between mallet and puck
+            if(player1.collides(puck)){
+                double[] velocity = puck.deflect(player1, 10, 10, 10, 10);
+                player1.moveMallet(velocity[1], 0);
+                puck.movePuck(velocity[0], 0);
+            }
+
+            if(player2.collides(puck)){
+                double[] velocity = puck.deflect(player2, 10, 10, 10, 10);
+                player2.moveMallet(velocity[1], 0);
+                puck.movePuck(velocity[0], 0);
+            }
+            
         }
             
     }

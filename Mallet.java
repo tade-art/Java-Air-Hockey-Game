@@ -57,5 +57,14 @@ public class Mallet{
         mallet.move(xVelo, yVelo);
     }
 
+    public boolean collides(Puck p)
+	{
+		double dx = p.getXPosition() - xPos;
+		double dy = p.getYPosition() - yPos;
+		double distance = Math.sqrt(dx*dx+dy*dy);
+
+		return distance < mallet.getSize()/2 + p.getSize()/2;
+	}
+
 }
  
