@@ -3,6 +3,8 @@ public class Puck{
     private Ball puck = new Ball(0, 0, 30, "GREY",2);     //Create the Puck object
     private double xPos ;
     private double yPos ;
+    private double xSpeed = 0;
+    private double ySpeed = 0;
     private double size = 30;
 
     //Constructor for Puck
@@ -31,6 +33,14 @@ public class Puck{
         return size;
     }
 
+    public double getXSpeed(){
+        return this.xSpeed;
+    }
+
+    public double getYSpeed(){
+        return this.ySpeed;
+    }
+
     /* SETTER METHODS */
 
     public void setXPosition(double dx){
@@ -43,6 +53,14 @@ public class Puck{
 
     public void setSize(double ds){
         this.puck.setSize(ds);
+    }
+
+    public void setXSpeed(double dxs){
+        this.xSpeed = dxs;
+    }
+
+    public void setYSpeed(double dys){
+        this.ySpeed = dys;
     }
 
     public void movePuck(double xVelo , double yVelo){
@@ -75,14 +93,12 @@ public class Puck{
         double[] p2Deflect = {impactVectorNorm[0] * p1dotImpact, impactVectorNorm[1] * p1dotImpact};
 
         double[] p1FinalTrajectory = {p1Trajectory[0] + p1Deflect[0] - p2Deflect[0],p1Trajectory[1] + p1Deflect[1]- p2Deflect[1]};
-        double[] p2FinalTrajectory = {p2Trajectory[0] + p2Deflect[0] - p1Deflect[0],p2Trajectory[1] + p2Deflect[1]- p1Deflect[1]};
+        //double[] p2FinalTrajectory = {p2Trajectory[0] + p2Deflect[0] - p1Deflect[0],p2Trajectory[1] + p2Deflect[1]- p1Deflect[1]};
 
-        double p1FinalMomentum = Math.sqrt(p1FinalTrajectory[0] * p1FinalTrajectory[0] + p1FinalTrajectory[1] * p1FinalTrajectory[1]);
-        double p2FinalMomentum = Math.sqrt(p2FinalTrajectory[0] * p2FinalTrajectory[0] + p2FinalTrajectory[1] * p2FinalTrajectory[1]);
+        //double p1FinalMomentum = Math.sqrt(p1FinalTrajectory[0] * p1FinalTrajectory[0] + p1FinalTrajectory[1] * p1FinalTrajectory[1]);
+        //double p2FinalMomentum = Math.sqrt(p2FinalTrajectory[0] * p2FinalTrajectory[0] + p2FinalTrajectory[1] * p2FinalTrajectory[1]);
 
-        double[] finalMovement={p1FinalMomentum,p2FinalMomentum};
-
-        return finalMovement;
+        return p1FinalTrajectory;
     }
 
     private double[] normalizeVector(double[] vec){

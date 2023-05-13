@@ -5,6 +5,7 @@ public class Mallet{
     private double yVelo = 0;
 
     private Ball mallet = new Ball(0, 0, 70, "GREY", 1);         //Creating the Mallet
+    private GameArena arena = new GameArena(0, 0,false);
     
     //Constructor for the Mallet
     public Mallet (double x, double y){
@@ -52,11 +53,13 @@ public class Mallet{
     
     /* METHOD TO MOVE THE MALLET */
     public void moveMallet(double xVelo , double yVelo){
-        xPos += xVelo;
-        yPos += yVelo;
+        this.xPos += xVelo;
+        this.yPos += yVelo;
+        this.xVelo = xVelo;
+        this.yVelo = yVelo;
         mallet.move(xVelo, yVelo);
     }
-
+    
     public boolean collides(Puck p)
 	{
 		double dx = p.getXPosition() - xPos;
