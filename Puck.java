@@ -1,6 +1,6 @@
 public class Puck{
 
-    private Ball puck = new Ball(0, 0, 30, "GREY",2);     //Create the Puck object
+    private Ball puck = new Ball(0, 0, 50, "GREY",2);     //Create the Puck object
     private double xPos = 0;
     private double yPos = 0;
     private double xSpeed = 0;

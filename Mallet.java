@@ -4,8 +4,7 @@ public class Mallet{
     private double xVelo = 0;
     private double yVelo = 0;
 
-    private Ball mallet = new Ball(0, 0, 65, "GREY", 1);         //Creating the Mallet
-    private GameArena arena = new GameArena(0, 0,false);
+    private Ball mallet = new Ball(0, 0, 80, "GREY", 1);         //Creating the Mallet
     
     //Constructor for the Mallet
     public Mallet (double x, double y){

@@ -1,12 +1,10 @@
-import java.awt.event.*;
-
 public class Driver{
     public static void main(String[] args) {
         GameArena arena = new GameArena(1024, 768);         //Creating Arena
         Table AHT = new Table(128, 128);                       //Creating Table  
         Mallet player1 = new Mallet(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);          //Creating left Mallet + Positioning them
         Mallet player2 = new Mallet(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);        //Creating Right Mallet + Positioning them
-        Puck puck = new Puck(AHT.returnRightSideXPos() - 100, AHT.returnLeftSideYPos()+200);                      //Creating + Positioning Puck
+        Puck puck = new Puck(AHT.returnRightSideXPos(), AHT.returnLeftSideYPos()+200);                      //Creating + Positioning Puck
 
         //Added the objects for manipulating the pucks and mallets
         double[] velocity = {0,0};
@@ -26,14 +24,20 @@ public class Driver{
         player1.addToArena(arena);              //Added Player 1 (left side)
         player2.addToArena(arena);              //Added Player 2 (right side)
         puck.addToArena(arena);                 //Added puck to table
-        arena.addText(player1Text);
-        arena.addText(player2Text);
-        arena.addText(titleText);
+        arena.addText(player1Text);             //Added text to represent player 1 score
+        arena.addText(player2Text);             //Added text to represent player 2 score
+        arena.addText(titleText);               //Added the title text
 
         boolean gameRunning = true;
         
         //While loop to run until the game ends
         while(gameRunning){     
+            
+            //Checking if the score limit has been reached
+            // if(p1score ==6 || p2score ==6){
+            //     gameRunning=false;
+            // }
+            
             arena.pause();      //Game is paused for animation purposes
 
             if(arena.letterPressed('w')){
@@ -63,33 +67,33 @@ public class Driver{
             }
 
                       //Checking for collisions for PLAYER 1          
-                    if(player1.returnYPos() - 30 <= 124){
+                    if(player1.returnYPos() - 40 <= 124){
                         player1.moveMallet(0, constantSpeed);
                     }
-                    if(player1.returnYPos() + 30 >= 532){
+                    if(player1.returnYPos() + 40 >= 532){
                         player1.moveMallet(0, -constantSpeed);
                     }
-                    if(player1.returnXPos() -30 <=124){
+                    if(player1.returnXPos() -40 <=124){
                         player1.moveMallet(constantSpeed, 0);
                     }
-                    if(player1.returnXPos() +30 >=512){
+                    if(player1.returnXPos() +40 >=512){
                         player1.moveMallet(-constantSpeed, 0);
                     }
         
                     //Checking for collisions for PLAYER 2          
-                    if(player2.returnYPos() - 30 <= 124){
+                    if(player2.returnYPos() - 40 <= 124){
                         player2.moveMallet(0, constantSpeed);
                     }
-                    if(player2.returnYPos() + 30 >= 532){
+                    if(player2.returnYPos() + 40 >= 532){
                         player2.moveMallet(0, -constantSpeed);
                     }
-                    if(player2.returnXPos() -30 <=512){
+                    if(player2.returnXPos() -40 <=512){
                         player2.moveMallet(constantSpeed, 0);
                     }
-                    if(player2.returnXPos() +30 >=900){
+                    if(player2.returnXPos() +40 >=900){
                         player2.moveMallet(-constantSpeed, 0);
                     }
-
+                    
             //Moving Puck (Setting velocity for the puck)
             if( (puck.getXSpeed() > 0 && puck.getYSpeed() > 0) || (puck.getXSpeed() < 0 && puck.getYSpeed() < 0) ){            
                 puck.movePuck(velocity[0] * (1-friction), velocity[1] * (1-friction));
@@ -113,14 +117,29 @@ public class Driver{
             }
 
             //Checking for collisions between puck and walls
-            if(puck.getYPosition() - 15 <= 130 || puck.getYPosition() + 15 >= 535){
+            if(puck.getYPosition() - 25 <= 130 || puck.getYPosition() + 25 >= 535){
                 velocity[1] = velocity[1] * -1;
                 puck.setYSpeed(velocity[1]);
             }
 
-            if(puck.getXPosition() - 15 <= 130 || puck.getXPosition() + 15 >= 906){
+            if(puck.getXPosition() - 25 <= 130 || puck.getXPosition() + 25 >= 906){
                 velocity[0] = velocity[0] * -1;
                 puck.setXSpeed(velocity[0]);
+            }
+
+            //Checking for collisions between puck and goals
+            //INCORRECT CHECKING LOL
+            if(puck.getYPosition()-40 >= AHT.returnLeftGoal().getYPosition() || puck.getYPosition()+40 <= AHT.returnRightGoal().getYPosition() + 150){
+                
+                if(puck.getXPosition() - 40 <= AHT.returnLeftGoal().getXPosition()){
+                    p1score++;
+                    player1Text.setText(String.valueOf(p1score));
+                }
+
+                if(puck.getXPosition() + 40 >= AHT.returnRightGoal().getXPosition()){
+                    p2score++;
+                    player2Text.setText(String.valueOf(p2score));
+                }
             }
         }
             

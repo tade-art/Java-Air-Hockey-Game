@@ -82,7 +82,7 @@ public class Table{
         return rightSide.getXPosition();
     }
 
-    /* METHODS TO RETURN THE WALLS AND THEIR PROPERTIES */
+    /* METHODS TO RETURN WALLS AND GOALS AND THEIR PROPERTIES */
     public Line returnLeftWall(){
         return leftWall;
     }
@@ -94,6 +94,14 @@ public class Table{
     }    
     public Line returnBottomWall(){
         return bottomWall;
+    }
+
+    public Rectangle returnLeftGoal(){
+        return leftGoal;
+    }
+
+    public Rectangle returnRightGoal(){
+        return rightGoal;
     }
 
 }
