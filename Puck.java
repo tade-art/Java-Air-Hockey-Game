@@ -1,8 +1,8 @@
 public class Puck{
 
     private Ball puck = new Ball(0, 0, 30, "GREY",2);     //Create the Puck object
-    private double xPos ;
-    private double yPos ;
+    private double xPos = 0;
+    private double yPos = 0;
     private double xSpeed = 0;
     private double ySpeed = 0;
     private double size = 30;
@@ -77,9 +77,6 @@ public class Puck{
         double xPos2 = m1.returnXPos();
         double yPos2 = m1.returnYPos();
 
-        //double p1InitialMomentum = Math.sqrt(xs1 * xs1 + ys1 * ys1);
-        //double p2InitialMomentum = Math.sqrt(xs2 * xs2 + ys2 * ys2);
-
         double[] p1Trajectory = {xs1,ys1};
         double[] p2Trajectory = {xs2,ys2};
 
@@ -93,10 +90,6 @@ public class Puck{
         double[] p2Deflect = {impactVectorNorm[0] * p1dotImpact, impactVectorNorm[1] * p1dotImpact};
 
         double[] p1FinalTrajectory = {p1Trajectory[0] + p1Deflect[0] - p2Deflect[0],p1Trajectory[1] + p1Deflect[1]- p2Deflect[1]};
-        //double[] p2FinalTrajectory = {p2Trajectory[0] + p2Deflect[0] - p1Deflect[0],p2Trajectory[1] + p2Deflect[1]- p1Deflect[1]};
-
-        //double p1FinalMomentum = Math.sqrt(p1FinalTrajectory[0] * p1FinalTrajectory[0] + p1FinalTrajectory[1] * p1FinalTrajectory[1]);
-        //double p2FinalMomentum = Math.sqrt(p2FinalTrajectory[0] * p2FinalTrajectory[0] + p2FinalTrajectory[1] * p2FinalTrajectory[1]);
 
         return p1FinalTrajectory;
     }
