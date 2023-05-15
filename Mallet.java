@@ -46,6 +46,9 @@ public class Mallet{
     }
 
     public void setPos(double x , double y){
+        this.mallet.setXPosition(x);
+        this.mallet.setYPosition(y);
+
         xPos = x;
         yPos = y;
     }

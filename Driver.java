@@ -8,7 +8,7 @@ public class Driver{
 
         //Added the objects for manipulating the pucks and mallets
         double[] velocity = {0,0};
-        double friction = 0.01;
+        double friction = 0.75;
         double constantSpeed = 12.0;
 
         //Added the text objects
@@ -95,17 +95,12 @@ public class Driver{
                     }
                     
             //Moving Puck (Setting velocity for the puck) 
-            //FIX FRICTRION IMMEDITAELY
-            /* |
-             * |
-             * |
-             * \/
-             */
+            //FIX FRICTRION
              if( (puck.getXSpeed() > 0 && puck.getYSpeed() > 0) || (puck.getXSpeed() < 0 && puck.getYSpeed() < 0) ){            
                 puck.movePuck(velocity[0] * (1-friction), velocity[1] * (1-friction));
             }    
             else{
-                puck.movePuck(velocity[0], velocity[1]);
+            puck.movePuck(velocity[0], velocity[1]);
             }
             
             
@@ -134,49 +129,57 @@ public class Driver{
             }
 
             //Checking for collisions between puck and goals
+            //Goal Detection is a bit iffy
             if((puck.getYPosition()-40 >= 253 && puck.getYPosition()-40 <= 403) || (puck.getYPosition()+40 >= 253 && puck.getYPosition()-40 <=403)){                
                 if(puck.getXPosition() - 40 <= 128){
                     velocity[0] = 0;
                     velocity[1] = 0;
-                    resetBall(AHT, puck, player1, player2,true);
                     
-                    p1score++;
-                    player1Text.setText(String.valueOf(p1score));
+                    reset(AHT, puck, player1, player2, false);
+                    
+                    p2score++;
+                    player2Text.setText(String.valueOf(p2score));
                 }
 
                 if(puck.getXPosition() + 40 >= 883){
                     velocity[0] = 0;
                     velocity[1] = 0;
-                    resetBall(AHT, puck, player1, player2,false);
                     
-                    p2score++;
-                    player2Text.setText(String.valueOf(p2score));
+                    reset(AHT, puck, player1, player2, true);
+                    
+                    p1score++;
+                    player1Text.setText(String.valueOf(p1score));
                 }
             }
         }
     }
-        //Function to reset the puck once goal scored
-        public static void resetBall(Table AHT,Puck puck, Mallet p1, Mallet p2, boolean flag){
-            //If player 1 scores
-            if(flag){
-                puck.setXPosition(AHT.returnRightSideXPos() - 50);
-                puck.setYPosition(AHT.returnLeftSideXPos() + 200);
-                p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
-                p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
-                puck.setXSpeed(0);
-                puck.setYPosition(0);    
-            }
-            
-            //If player 2 scores
-            else{
-                puck.setXPosition(AHT.returnRightSideXPos() - 50);
-                puck.setYPosition(AHT.returnLeftSideXPos() + 200);
-                p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
-                p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
-                puck.setXSpeed(0);
-                puck.setYPosition(0);    
-            }                         
-                                     
-            
+
+    //Function to reset the arena everytime a goal is scored
+    public static void reset (Table AHT, Puck puck, Mallet p1 , Mallet p2 , boolean flag){
+        
+        //If player 1 scored, then reset and spawn ball in player's 2 favour
+        if(flag){
+            puck.setXPosition(AHT.returnRightSideXPos() - 50);
+            puck.setYPosition(AHT.returnLeftSideXPos() + 200);
+        
+            p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
+            p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
+        
+            puck.setXSpeed(0);
+            puck.setYSpeed(0);
         }
+        
+        //If player 2 scored, then reset and spawn ball in player 1's favour
+        else{
+            puck.setXPosition(AHT.returnRightSideXPos() + 50);
+            puck.setYPosition(AHT.returnLeftSideXPos() + 200);
+        
+            p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
+            p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
+        
+            puck.setXSpeed(0);
+            puck.setYSpeed(0);
+        }
+
+    }
 }

@@ -44,10 +44,12 @@ public class Puck{
     /* SETTER METHODS */
 
     public void setXPosition(double dx){
+        this.puck.setXPosition(dx); 
         this.xPos = dx;
     }
 
     public void setYPosition(double dy){
+        this.puck.setYPosition(dy);
         this.yPos = dy;
     }
 
