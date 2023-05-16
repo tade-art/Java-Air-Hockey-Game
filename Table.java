@@ -1,53 +1,76 @@
-import javax.management.monitor.GaugeMonitor;
-
+/**
+ * This is the class which is used to assemble the arena in the air hockey game
+ * @author Tadas Ivanauskas
+ */
 public class Table{
     
-    //Creating the layout (Separated via classes referenced)
-    private Rectangle leftSide = new Rectangle(0,0,384,400,"WHITE");            //Left player side
-    private Rectangle rightSide = new Rectangle(0,0,384,400,"WHITE");           //Right Player side
-    private Rectangle leftGoal =  new Rectangle(0, 0, 15, 150, "GREY");        //Goal on the right side
-    private Rectangle rightGoal = new Rectangle(0, 0, 15, 150, "GREY");;       //Goal on the left side
+    /**
+     * Creating the layout (Separated via classes referenced)
+    */
+    private Rectangle leftSide = new Rectangle(0,0,384,400,"WHITE");          
+    private Rectangle rightSide = new Rectangle(0,0,384,400,"WHITE");    
+    private Rectangle leftGoal =  new Rectangle(0, 0, 15, 150, "GREY");    
+    private Rectangle rightGoal = new Rectangle(0, 0, 15, 150, "GREY");;   
 
-    //Line classes
-    private Line centreLine = new Line(0, 0, 0, 0, 4, "RED");     //Centre line between the player sides
-    private Line topWall = new Line(0, 0, 0, 0, 20, "RED");       //Line for the top wall
-    private Line bottomWall = new Line(0, 0, 0, 0, 20, "RED");    //Line for the top wall
-    private Line leftWall = new Line(0, 0, 0, 0, 20, "RED");      //Line for the top wall
-    private Line rightWall = new Line(0, 0, 0, 0, 20, "RED");     //Line for the top wall
+    /**
+     * Creating the outlines of the arena and the centre line
+     */
+    private Line centreLine = new Line(0, 0, 0, 0, 4, "RED");    
+    private Line topWall = new Line(0, 0, 0, 0, 20, "RED");    
+    private Line bottomWall = new Line(0, 0, 0, 0, 20, "RED");
+    private Line leftWall = new Line(0, 0, 0, 0, 20, "RED"); 
+    private Line rightWall = new Line(0, 0, 0, 0, 20, "RED");
 
-    //Ball classes (Used to create circular outline in the middle of arena)
-    private Ball bottomLayer = new Ball(0, 0, 75, "RED", 0);         //Bottom layer of the cirlce in middle (used to colour outline)
-    private Ball topLayer = new Ball(0, 0, 70, "WHITE", 1);          //Top layer of the cirlce in middle (used to hollow out circle and create the look)
+    /**
+     * Ball classes which are used to create the "illusion" of the centre
+     */
+    private Ball bottomLayer = new Ball(0, 0, 75, "RED", 0);   
+    private Ball topLayer = new Ball(0, 0, 70, "WHITE", 1); 
 
-    //Constructor for the class (initialises the arena)
+    /**
+     * Constructor Method
+     * @param xPos the X Position of the top left hand corner of the arena
+     * @param yPos the Y Position of the top left hand corner of the arena
+     */
     public Table(double xPos, double yPos){
-        //Set both player sides
+        /**
+         * Setting the positions of the left and right sides for the players
+         */
         leftSide.setXPosition(xPos);
         leftSide.setYPosition(yPos);
         rightSide.setXPosition(xPos + 384);
         rightSide.setYPosition(yPos);
 
-        //Setting Goal positions
+        /**
+         * Setting the positions of the left and right goals
+         */
         leftGoal.setXPosition(xPos);
         leftGoal.setYPosition(yPos+125);
         rightGoal.setXPosition(xPos+755);
         rightGoal.setYPosition(yPos+125);
 
-        //Set the lines
+        /**
+         * Settings the lines - creating the outlines of the arena
+         */
         centreLine.setLinePosition(xPos+384, yPos+400, xPos+384, yPos);
         topWall.setLinePosition(xPos, yPos - 10, xPos + 768, yPos - 10);
         bottomWall.setLinePosition(xPos, yPos + 410, xPos + 778, yPos + 410);
         leftWall.setLinePosition(xPos-10, yPos - 10, xPos - 10, yPos + 410);
         rightWall.setLinePosition(xPos+778, yPos - 10, xPos + 778, yPos + 410);
 
-        //Create the balls in the centre
+        /**
+         * Setting the centre piece - the "illusion" of the middle
+         */
         bottomLayer.setXPosition(xPos+384);
         bottomLayer.setYPosition(xPos+200);
         topLayer.setXPosition(xPos+383);
         topLayer.setYPosition(xPos+200);
     }
 
-    //Method to add the table to the GameArena
+    /**
+     * Method to add the arena to the table
+     * @param a the arena which table is being added to 
+     */
     public void addToArena(GameArena a){
         a.addRectangle(leftSide);
         a.addRectangle(rightSide);
@@ -62,46 +85,36 @@ public class Table{
         a.addBall(topLayer);
     }
 
-    //Getter Method to return XPos of left player's side
+    /**
+     * Method to return the X Position of the left side
+     * @return Returns the X Position
+     */
     public double returnLeftSideXPos(){
         return leftSide.getXPosition();
     }
 
-    //Getter Method to return YPos of left player's side
+    /**
+     * Method to return the Y Position of the left side
+     * @return Returns the Y Position
+     */
     public double returnLeftSideYPos(){
         return leftSide.getXPosition();
     }
 
-    //Getter Method to return XPos of right player's side
+    /**
+     * Method to return the X Position of the right side
+     * @return Returns the X Position
+     */
     public double returnRightSideXPos(){
         return rightSide.getXPosition();
     }
 
-    //Getter Method to return YPos of right player's side
+    /**
+     * Method to return the Y Position of the right side
+     * @return Returns the Y Position
+     */
     public double returnRightSideYPos(){
         return rightSide.getXPosition();
-    }
-
-    /* METHODS TO RETURN WALLS AND GOALS AND THEIR PROPERTIES */
-    public Line returnLeftWall(){
-        return leftWall;
-    }
-    public Line returnRightWall(){
-        return rightWall;
-    }    
-    public Line returnTopWall(){
-        return topWall;
-    }    
-    public Line returnBottomWall(){
-        return bottomWall;
-    }
-
-    public Rectangle returnLeftGoal(){
-        return leftGoal;
-    }
-
-    public Rectangle returnRightGoal(){
-        return rightGoal;
     }
 
 }
