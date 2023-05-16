@@ -62,6 +62,7 @@ public class Mallet{
         mallet.move(xVelo, yVelo);
     }
     
+    /* Method to check if Mallet collides with puck */
     public boolean collides(Puck p)
 	{
 		double dx = p.getXPosition() - xPos;

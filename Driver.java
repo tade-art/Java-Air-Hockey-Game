@@ -1,52 +1,77 @@
+
+/**
+ * This class manipulates all the other java files in the folder to create an Air Hocket game.
+ * @author Tadas Ivanauskas
+ */
+
 public class Driver{
     public static void main(String[] args) {
-        GameArena arena = new GameArena(1024, 768);         //Creating Arena
-        Table AHT = new Table(128, 128);                       //Creating Table  
-        Mallet player1 = new Mallet(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);          //Creating left Mallet + Positioning them
-        Mallet player2 = new Mallet(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);        //Creating Right Mallet + Positioning them
-        Puck puck = new Puck(AHT.returnRightSideXPos(), AHT.returnLeftSideYPos()+200);                      //Creating + Positioning Puck
+        
+        /*
+         * Generates the Air Hockey Table
+         */
+        GameArena arena = new GameArena(1024, 768);  
+        Table AHT = new Table(128, 128);     
+        Mallet player1 = new Mallet(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);          
+        Mallet player2 = new Mallet(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
+        Puck puck = new Puck(AHT.returnRightSideXPos(), AHT.returnLeftSideYPos()+200);
 
-        //Added the objects for manipulating the pucks and mallets
+        /*
+         * Variables which are used within the phyics engine
+         */
         double[] velocity = {0,0};
-        double friction = 0.97;
+        double friction = 0.98;
         double constantSpeed = 12.0;
 
-        //Added the text objects
-        int p1score = 0;
-        int p2score = 0;
+        /*
+         * Text Objects which are used to display game info
+         */
+        int p1score = 5;
+        int p2score = 5;
         Text player1Text = new Text(String.valueOf(p1score), 50, 275, 650, "RED");
         Text player2Text = new Text(String.valueOf(p2score), 50, 700, 650, "RED");
         Text titleText = new Text("Welcome to Airhockey", 50, 200, 75, "RED");
         Text p1WinText = new Text("Player 1 Wins!",35,175,700,"RED");
         Text p2WinText = new Text("Player 2 Wins!", 35, 575, 700, "RED");
 
+        /*
+         * Internal construction method
+         */
+        AHT.addToArena(arena);                 
+        player1.addToArena(arena);              
+        player2.addToArena(arena); 
+        puck.addToArena(arena); 
+        arena.addText(player1Text); 
+        arena.addText(player2Text);
+        arena.addText(titleText);
 
-        //Adding everything to the Arena
-        AHT.addToArena(arena);                  //Added Table
-        player1.addToArena(arena);              //Added Player 1 (left side)
-        player2.addToArena(arena);              //Added Player 2 (right side)
-        puck.addToArena(arena);                 //Added puck to table
-        arena.addText(player1Text);             //Added text to represent player 1 score
-        arena.addText(player2Text);             //Added text to represent player 2 score
-        arena.addText(titleText);               //Added the title text
-
+        /*
+        * Global flag which is used to determine if the game should run
+        */
         boolean gameRunning = true;
         
-        //While loop to run until the game ends
+        /*
+        * While loop to run until the game ends 
+        */
         while(gameRunning){     
             
-            //Checking if the score limit has been reached
                 if(p1score ==6) {
                     gameRunning=false;
-                    arena.addText(p1WinText);               //Added a text which declares that player 1 won
+                    arena.addText(p1WinText);
                 }
                 else if(p2score == 6){
                     gameRunning = false;
-                    arena.addText(p2WinText);               //Added a text which declares that player 2 won
+                    arena.addText(p2WinText); 
                 }
             
-            arena.pause();      //Game is paused for animation purposes
+            /*
+             * Internal method used for animation purposes - called with GameArena
+             */
+            arena.pause();
 
+            /*
+            * Movement controls for Player 1
+            */   
             if(arena.letterPressed('w')){
                 player1.moveMallet(0, -constantSpeed);
             }
@@ -60,6 +85,9 @@ public class Driver{
                 player1.moveMallet(constantSpeed, 0);
             }
             
+            /*
+            * Movement controls for Player 1
+            */ 
             if(arena.letterPressed('i') == true){
                 player2.moveMallet(0, -constantSpeed);
             }
@@ -73,7 +101,9 @@ public class Driver{
                 player2.moveMallet(constantSpeed, 0);
             }
 
-                      //Checking for collisions for PLAYER 1          
+                    /*
+                    * Branch statements checking for collisions for PLAYER 1
+                    */          
                     if(player1.returnYPos() - 40 <= 124){
                         player1.moveMallet(0, constantSpeed);
                     }
@@ -87,7 +117,9 @@ public class Driver{
                         player1.moveMallet(-constantSpeed, 0);
                     }
         
-                    //Checking for collisions for PLAYER 2          
+                    /*
+                    * Branch statements checking for collisions for PLAYER 2
+                    */          
                     if(player2.returnYPos() - 40 <= 124){
                         player2.moveMallet(0, constantSpeed);
                     }
@@ -101,15 +133,17 @@ public class Driver{
                         player2.moveMallet(-constantSpeed, 0);
                     }
                     
-            //Moving Puck (Setting velocity for the puck) 
-            //IMPLEMENT FRICTION
+            /*
+            * Internal method used to move the puck via velocity 
+            */ 
             velocity[0] *= friction;
             velocity[1] *= friction;
             puck.movePuck(velocity[0], velocity[1]);
             
-            //Checking for collisions between mallet and puck
+            /*
+            * Branch statemetns checking for collisions between Mallet and Puck 
+            */
             if(player1.collides(puck)){              
-
                 velocity = puck.deflect(player1, puck.getXSpeed(), player1.returnXVelo(), puck.getYSpeed(), player1.returnYVelo());
                 puck.setXSpeed(velocity[0]);
                 puck.setYSpeed(velocity[1]);
@@ -121,7 +155,9 @@ public class Driver{
                 puck.setYSpeed(velocity[1]);
             }
 
-            //Checking for collisions between puck and walls
+            /*
+            * Branch statements checking for collisions between puck and walls
+            */
             if(puck.getYPosition() - 25 <= 130 || puck.getYPosition() + 25 >= 535){
                 velocity[1] = velocity[1] * -1;
                 puck.setYSpeed(velocity[1]);
@@ -132,11 +168,11 @@ public class Driver{
                 puck.setXSpeed(velocity[0]);
             }
 
-            //Checking for collisions between puck and goals
-            //Goal Detection needs to be tighter, it's too loose and calls a reset too early
-
+            /*
+            * Branch statements to check for collisions between the Puck and the Goal, then do subsequent methods
+            */ 
             if((puck.getYPosition()-40 >= 280 && puck.getYPosition()-40 <= 370) || (puck.getYPosition()+40 >= 280 && puck.getYPosition()+40 <=370)){                
-                if(puck.getXPosition() - 40 <= 128){
+                if(puck.getXPosition() - 40 <= 115){
                     velocity[0] = 0;
                     velocity[1] = 0;
                     
@@ -146,7 +182,7 @@ public class Driver{
                     player2Text.setText(String.valueOf(p2score));
                 }
 
-                if(puck.getXPosition() + 40 >= 883){
+                if(puck.getXPosition() + 40 >= 900){
                     velocity[0] = 0;
                     velocity[1] = 0;
                     
@@ -158,12 +194,12 @@ public class Driver{
             }
         }
 
-        //Resets the whole game and allows the players to play again
-        //Keep debugging and try to fix this
+        /*
+        * Internal method used to reset the game once score limit has been reached  
+        */
         while(gameRunning == false){
-            //System.out.println("Got into check");
+            arena.pause();
             if(arena.letterPressed('r')){
-                System.out.println("Got in");
                 p1score = 0;
                 p2score = 0;
                 reset(AHT, puck, player1, player2, 0);
@@ -171,33 +207,48 @@ public class Driver{
                 arena.removeText(p1WinText);
                 player1Text.setText(String.valueOf(p1score));
                 player2Text.setText(String.valueOf(p2score));
-         
-                //gameRunning = true;
+                gameRunning = true;
                 }
         }
     }
 
-    //Function to reset the arena everytime a goal is scored
-    public static void reset (Table AHT, Puck puck, Mallet p1 , Mallet p2 , int check){
-        //Sets the pucks and players positions
+    /**
+	 * Resets the GameArena and Table.
+	 *
+	 * @param Table the table which is being edited.
+	 * @param Puck the puck which is being reset.
+     * @param Mallet the first mallet which is being reset (Player 1)
+     * @param Mallet the second mallet which is being reset (Player 2)
+     * @param Check the flag used to check which condition used to execute (0 is used to reset game, 1 / -1 used to reset each side of the board)
+	 */
+    
+     public static void reset (Table AHT, Puck puck, Mallet p1 , Mallet p2 , int check){
+        /*
+        * Reset the player's positions, Puck position and Puck speed 
+        */
         p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
         p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
-
+        puck.setYPosition(AHT.returnLeftSideXPos() + 200);
         puck.setXSpeed(0);
         puck.setYSpeed(0);
-
-        puck.setYPosition(AHT.returnLeftSideXPos() + 200);
         
-        //If player 1 scored, then reset and spawn ball in player's 2 favour
+        /*
+        * If player 1 scored, then reset and spawn ball in player's 2 favour 
+        */
         if(check > 0){
-            puck.setXPosition(AHT.returnRightSideXPos() + 50);
+            puck.setXPosition(AHT.returnRightSideXPos() + 35);
         }
         
-        //If player 2 scored, then reset and spawn ball in player 1's favour
+        /*
+        * If player 2 scored, then reset and spawn ball in player 1's favour
+        */
         else if(check < 0){
-            puck.setXPosition(AHT.returnRightSideXPos() - 50);
+            puck.setXPosition(AHT.returnRightSideXPos() - 35);
         }
 
+        /*
+        *If flag equals 0, then position the puck in the middle (used for resetting game)
+        */
         else if (check ==0){
             puck.setXPosition(AHT.returnRightSideXPos());
         }
