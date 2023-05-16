@@ -8,7 +8,7 @@ public class Driver{
 
         //Added the objects for manipulating the pucks and mallets
         double[] velocity = {0,0};
-        double friction = 0.75;
+        double friction = 0.97;
         double constantSpeed = 12.0;
 
         //Added the text objects
@@ -17,6 +17,8 @@ public class Driver{
         Text player1Text = new Text(String.valueOf(p1score), 50, 275, 650, "RED");
         Text player2Text = new Text(String.valueOf(p2score), 50, 700, 650, "RED");
         Text titleText = new Text("Welcome to Airhockey", 50, 200, 75, "RED");
+        Text p1WinText = new Text("Player 1 Wins!",35,175,700,"RED");
+        Text p2WinText = new Text("Player 2 Wins!", 35, 575, 700, "RED");
 
 
         //Adding everything to the Arena
@@ -34,9 +36,14 @@ public class Driver{
         while(gameRunning){     
             
             //Checking if the score limit has been reached
-            // if(p1score ==6 || p2score ==6){
-            //     gameRunning=false;
-            // }
+                if(p1score ==6) {
+                    gameRunning=false;
+                    arena.addText(p1WinText);               //Added a text which declares that player 1 won
+                }
+                else if(p2score == 6){
+                    gameRunning = false;
+                    arena.addText(p2WinText);               //Added a text which declares that player 2 won
+                }
             
             arena.pause();      //Game is paused for animation purposes
 
@@ -95,17 +102,14 @@ public class Driver{
                     }
                     
             //Moving Puck (Setting velocity for the puck) 
-            //FIX FRICTRION
-             if( (puck.getXSpeed() > 0 && puck.getYSpeed() > 0) || (puck.getXSpeed() < 0 && puck.getYSpeed() < 0) ){            
-                puck.movePuck(velocity[0] * (1-friction), velocity[1] * (1-friction));
-            }    
-            else{
+            //IMPLEMENT FRICTION
+            velocity[0] *= friction;
+            velocity[1] *= friction;
             puck.movePuck(velocity[0], velocity[1]);
-            }
-            
             
             //Checking for collisions between mallet and puck
-            if(player1.collides(puck)){
+            if(player1.collides(puck)){              
+
                 velocity = puck.deflect(player1, puck.getXSpeed(), player1.returnXVelo(), puck.getYSpeed(), player1.returnYVelo());
                 puck.setXSpeed(velocity[0]);
                 puck.setYSpeed(velocity[1]);
@@ -129,13 +133,14 @@ public class Driver{
             }
 
             //Checking for collisions between puck and goals
-            //Goal Detection is a bit iffy
-            if((puck.getYPosition()-40 >= 253 && puck.getYPosition()-40 <= 403) || (puck.getYPosition()+40 >= 253 && puck.getYPosition()-40 <=403)){                
+            //Goal Detection needs to be tighter, it's too loose and calls a reset too early
+
+            if((puck.getYPosition()-40 >= 280 && puck.getYPosition()-40 <= 370) || (puck.getYPosition()+40 >= 280 && puck.getYPosition()+40 <=370)){                
                 if(puck.getXPosition() - 40 <= 128){
                     velocity[0] = 0;
                     velocity[1] = 0;
                     
-                    reset(AHT, puck, player1, player2, false);
+                    reset(AHT, puck, player1, player2, -1);
                     
                     p2score++;
                     player2Text.setText(String.valueOf(p2score));
@@ -145,40 +150,56 @@ public class Driver{
                     velocity[0] = 0;
                     velocity[1] = 0;
                     
-                    reset(AHT, puck, player1, player2, true);
+                    reset(AHT, puck, player1, player2, 1);
                     
                     p1score++;
                     player1Text.setText(String.valueOf(p1score));
                 }
             }
         }
+
+        //Resets the whole game and allows the players to play again
+        //Keep debugging and try to fix this
+        while(gameRunning == false){
+            //System.out.println("Got into check");
+            if(arena.letterPressed('r')){
+                System.out.println("Got in");
+                p1score = 0;
+                p2score = 0;
+                reset(AHT, puck, player1, player2, 0);
+                arena.removeText(p2WinText);
+                arena.removeText(p1WinText);
+                player1Text.setText(String.valueOf(p1score));
+                player2Text.setText(String.valueOf(p2score));
+         
+                //gameRunning = true;
+                }
+        }
     }
 
     //Function to reset the arena everytime a goal is scored
-    public static void reset (Table AHT, Puck puck, Mallet p1 , Mallet p2 , boolean flag){
+    public static void reset (Table AHT, Puck puck, Mallet p1 , Mallet p2 , int check){
+        //Sets the pucks and players positions
+        p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
+        p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
+
+        puck.setXSpeed(0);
+        puck.setYSpeed(0);
+
+        puck.setYPosition(AHT.returnLeftSideXPos() + 200);
         
         //If player 1 scored, then reset and spawn ball in player's 2 favour
-        if(flag){
-            puck.setXPosition(AHT.returnRightSideXPos() - 50);
-            puck.setYPosition(AHT.returnLeftSideXPos() + 200);
-        
-            p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
-            p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
-        
-            puck.setXSpeed(0);
-            puck.setYSpeed(0);
+        if(check > 0){
+            puck.setXPosition(AHT.returnRightSideXPos() + 50);
         }
         
         //If player 2 scored, then reset and spawn ball in player 1's favour
-        else{
-            puck.setXPosition(AHT.returnRightSideXPos() + 50);
-            puck.setYPosition(AHT.returnLeftSideXPos() + 200);
-        
-            p1.setPos(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);  
-            p2.setPos(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
-        
-            puck.setXSpeed(0);
-            puck.setYSpeed(0);
+        else if(check < 0){
+            puck.setXPosition(AHT.returnRightSideXPos() - 50);
+        }
+
+        else if (check ==0){
+            puck.setXPosition(AHT.returnRightSideXPos());
         }
 
     }
