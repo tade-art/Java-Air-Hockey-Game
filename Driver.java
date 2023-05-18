@@ -1,3 +1,4 @@
+import java.util.GregorianCalendar;
 
 /**
  * This class manipulates all the other java files in the folder to create an Air Hockey game.
@@ -15,6 +16,8 @@ public class Driver{
         Mallet player1 = new Mallet(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);          
         Mallet player2 = new Mallet(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
         Puck puck = new Puck(AHT.returnRightSideXPos(), AHT.returnLeftSideYPos()+200);
+        SoundPlayer sound = new SoundPlayer(null);
+
 
         /**
          * Internal flag used for checking if game is running
@@ -33,6 +36,11 @@ public class Driver{
          * While loop to run the game forever
          */
         while(true){
+            
+            sound.changePath("fanfare.wav");
+            Thread greetSoundThread = new Thread( () -> sound.play());
+            greetSoundThread.start();
+            
             runGame(arena, AHT, player1, player2, puck, gameRunning);
         }
 
@@ -57,15 +65,19 @@ public class Driver{
         double constantSpeed = 12.0;
 
         /**
-         * Text Objects which are used to display game info
+         * Objects which are used to display game info
          */
         int p1score = 0;
         int p2score = 0;
-        Text player1Text = new Text(String.valueOf(p1score), 50, 275, 650, "RED");
-        Text player2Text = new Text(String.valueOf(p2score), 50, 700, 650, "RED");
-        Text titleText = new Text("Welcome to Airhockey", 50, 200, 75, "RED");
-        Text p1WinText = new Text("Player 1 Wins!",35,175,700,"RED");
-        Text p2WinText = new Text("Player 2 Wins!", 35, 575, 700, "RED");
+        Text player1Text = new Text(String.valueOf(p1score), 50, 50, 350, "RED");
+        Text player2Text = new Text(String.valueOf(p2score), 50, 950, 350, "RED");
+        Text titleText = new Text("Welcome to Airhockey", 35, 125, 75, "RED");
+        Text p1WinText = new Text("Player 1 Wins!",35,175,650,"RED");
+        Text p2WinText = new Text("Player 2 Wins!", 35, 575, 650, "RED");
+        Text mute = new Text("Press M to unmute", 25, 400, 700, "RED");
+        Text unmute = new Text("Press M to mute", 25, 400, 700, "RED");
+        boolean muteFlag = false;
+
 
         /**
          * Adds the Text objects to the arena
@@ -73,24 +85,38 @@ public class Driver{
         arena.addText(player1Text); 
         arena.addText(player2Text);
         arena.addText(titleText);
+        arena.addText(mute);
+
+        /**
+         * Creating the sound objects to be played and the audio player
+         */
+         SoundPlayer sound = new SoundPlayer(null);
+
+         String fanfare = "fanfare.wav";
+         String drumroll = "drumroll.wav";
+         String bounce = "bounce.wav";
+         String applause = "applause.wav";
+         String hit = "hit.wav";
 
         /**
         * While loop to run until the game ends 
         */
         while(gameRunning){
-                        
             /**
              * Check statements to see if the end of the game has been reached 
              */    
             if(p1score ==6) {
+                    arena.addText(p1WinText);     
+                    sound.changePath(fanfare);
+                    sound.play();
                     gameRunning=false;
-                    arena.addText(p1WinText);
                 }
                 else if(p2score == 6){
-                    gameRunning = false;
                     arena.addText(p2WinText); 
+                    sound.changePath(fanfare);
+                    sound.play();
+                    gameRunning = false;
                 }
-            
             
             /**
              * Internal method used for animation purposes - called with GameArena
@@ -103,30 +129,52 @@ public class Driver{
             if(arena.letterPressed('w')){
                 player1.moveMallet(0, -constantSpeed);
             }
-            if(arena.letterPressed('a') == true){
+            if(arena.letterPressed('a')){
                 player1.moveMallet(-constantSpeed, 0);
             }
-            if(arena.letterPressed('s') == true){
+            if(arena.letterPressed('s')){
                 player1.moveMallet(0, constantSpeed);
             }
-            if(arena.letterPressed('d') == true){
+            if(arena.letterPressed('d')){
                 player1.moveMallet(constantSpeed, 0);
             }
             
             /**
-            * Movement controls for Player 1
+            * Movement controls for Player 2
             */ 
-            if(arena.letterPressed('i') == true){
+            if(arena.letterPressed('i')){
                 player2.moveMallet(0, -constantSpeed);
             }
-            if(arena.letterPressed('j') == true){
+            if(arena.letterPressed('j')){
                 player2.moveMallet(-constantSpeed, 0);
             }
-            if(arena.letterPressed('k') == true){
+            if(arena.letterPressed('k')){
                 player2.moveMallet(0, constantSpeed);
             }
-            if(arena.letterPressed('l') == true){
+            if(arena.letterPressed('l')){
                 player2.moveMallet(constantSpeed, 0);
+            }
+
+            /**
+             * Miscellaneous Controls (Mute and Cheats)
+             */
+            if(arena.letterPressed('m')){
+                if(muteFlag == false){
+                    arena.removeText(mute);
+                    arena.addText(unmute);
+                    muteFlag=false;
+                    sound.toggleMute();
+                    arena.pause();
+                }
+                else{                    
+                    arena.removeText(unmute);
+                    arena.addText(mute);
+                    muteFlag=true;
+                    sound.toggleMute();
+                    arena.pause();
+                }
+                
+                arena.pause();
             }
 
             /**
@@ -173,12 +221,22 @@ public class Driver{
             */
             if(player1.collides(puck)){              
                 velocity = puck.deflect(player1, puck.getXSpeed(), player1.returnXVelo(), puck.getYSpeed(), player1.returnYVelo());
+                
+                sound.changePath(hit);
+                Thread soundThread = new Thread( () -> sound.play());
+                soundThread.start();
+                
                 puck.setXSpeed(velocity[0]);
                 puck.setYSpeed(velocity[1]);
             }
 
             if(player2.collides(puck)){
                 velocity = puck.deflect(player2, puck.getXSpeed(), player2.returnXVelo(), puck.getYSpeed(), player2.returnYVelo());
+                
+                sound.changePath(hit);
+                Thread soundThread = new Thread( () -> sound.play());
+                soundThread.start();
+                
                 puck.setXSpeed(velocity[0]);
                 puck.setYSpeed(velocity[1]);
             }
@@ -187,11 +245,21 @@ public class Driver{
             * Branch statements checking for collisions between puck and walls
             */
             if(puck.getYPosition() - 25 <= 130 || puck.getYPosition() + 25 >= 535){
+                
+                sound.changePath(bounce);
+                Thread soundThread = new Thread( () -> sound.play());
+                soundThread.start();
+
                 velocity[1] = velocity[1] * -1;
                 puck.setYSpeed(velocity[1]);
             }
 
             if(puck.getXPosition() - 25 <= 130 || puck.getXPosition() + 25 >= 906){
+                
+                sound.changePath(bounce);
+                Thread soundThread = new Thread( () -> sound.play());
+                soundThread.start();
+                
                 velocity[0] = velocity[0] * -1;
                 puck.setXSpeed(velocity[0]);
             }
@@ -238,6 +306,10 @@ public class Driver{
                     
                     p2score++;
                     player2Text.setText(String.valueOf(p2score));
+
+                    sound.changePath(applause);
+                    Thread goalThread = new Thread( () -> sound.play());
+                    goalThread.start();
                 }
 
                 if(puck.getXPosition() + 40 >= 900){
@@ -248,6 +320,10 @@ public class Driver{
                     
                     p1score++;
                     player1Text.setText(String.valueOf(p1score));
+
+                    sound.changePath(applause);
+                    Thread goalThread = new Thread( () -> sound.play());
+                    goalThread.start();
                 }
             }
 

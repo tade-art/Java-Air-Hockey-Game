@@ -3,16 +3,19 @@
 This GUI application allows a user to play an Air Hockey Table game against a friend.
 
 This applicaiton used Java as the main coding language, and used the following libraries (and more) to help:
-*javax.swing
-*java.awt
-*java.util
+
++ javax.swing
++ java.awt
++ java.util
++ java.sound.sampled
 
 Java was used for this assignement since it allows Object Orientation Programming, making it easier to create a working game through multiple files. Additionally, it's easy to add more features into the game since all files are separated.
 
 # Controls
 
-*Player 1 (Left Mallet) has access to movement through keys : W A S D
-*Player 2 (Right Mallet) has access to movement through keys : I J K L
++ Player 1 (Left Mallet) has access to movement through keys : W A S D
++ Player 2 (Right Mallet) has access to movement through keys : I J K L
++ Game can be restarted by pressing R once game has finished
 
 # Files contained
 
