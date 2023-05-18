@@ -8,6 +8,10 @@ This repository contains the following files for the SCC.110 project "Air Hockey
 + Line.java
 + Rectangle.java
 + Text.java
++ Mallet.java
++ Puck.java
++ Table.java
++ Driver.java
 
 **Sound effects (.wav files)**
 + applause.wav

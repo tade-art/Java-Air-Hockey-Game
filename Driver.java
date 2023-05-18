@@ -8,19 +8,51 @@ public class Driver{
     public static void main(String[] args) {
         
         /**
-         * Generates the Air Hockey Table
+         * Initialized all the objects used in the runGame method
          */
-        GameArena arena = new GameArena(1024, 768);  
+        GameArena arena = new GameArena(1024, 768); 
         Table AHT = new Table(128, 128);     
         Mallet player1 = new Mallet(AHT.returnLeftSideXPos() + 192, AHT.returnLeftSideYPos()+200);          
         Mallet player2 = new Mallet(AHT.returnRightSideXPos() + 192, AHT.returnRightSideYPos()-180);
         Puck puck = new Puck(AHT.returnRightSideXPos(), AHT.returnLeftSideYPos()+200);
 
         /**
+         * Internal flag used for checking if game is running
+         */
+        boolean gameRunning = true;
+
+        /**
+         * Internal construction method
+         */
+        AHT.addToArena(arena);                 
+        player1.addToArena(arena);              
+        player2.addToArena(arena); 
+        puck.addToArena(arena); 
+        
+        /**
+         * While loop to run the game forever
+         */
+        while(true){
+            runGame(arena, AHT, player1, player2, puck, gameRunning);
+        }
+
+    }
+
+    /**
+     * Method used to run the game
+     * @param arena The arena which is being added too
+     * @param AHT   The Table which the game takes place on
+     * @param player1   The Mallet belonging to player 1
+     * @param player2   The Mallet belonging to player 2
+     * @param puck  The puck which is being used 
+     * @param gameRunning   The flag which is being used to check if the game is running or not
+     */
+    public static void runGame(GameArena arena, Table AHT, Mallet player1, Mallet player2, Puck puck,boolean gameRunning){
+        /**
          * Variables which are used within the phyics engine
          */
         double[] velocity = {0,0};
-        double friction = 0.98;
+        double friction = 0.99;
         double constantSpeed = 12.0;
 
         /**
@@ -35,21 +67,12 @@ public class Driver{
         Text p2WinText = new Text("Player 2 Wins!", 35, 575, 700, "RED");
 
         /**
-         * Internal construction method
+         * Adds the Text objects to the arena
          */
-        AHT.addToArena(arena);                 
-        player1.addToArena(arena);              
-        player2.addToArena(arena); 
-        puck.addToArena(arena); 
         arena.addText(player1Text); 
         arena.addText(player2Text);
         arena.addText(titleText);
 
-        /**
-        * Global flag which is used to determine if the game should run
-        */
-        boolean gameRunning = true;
-        
         /**
         * While loop to run until the game ends 
         */
@@ -63,6 +86,7 @@ public class Driver{
                     gameRunning = false;
                     arena.addText(p2WinText); 
                 }
+            
             
             /**
              * Internal method used for animation purposes - called with GameArena
@@ -192,15 +216,10 @@ public class Driver{
                     player1Text.setText(String.valueOf(p1score));
                 }
             }
-        }
 
         /**
         * Internal method used to reset the game once score limit has been reached  
         */
-        
-        
-        //ERROR - CANNOT ACCESS LOOP EARLY SINCE CODE FINISHED
-        //SOLUTION - CREATE EITHER A FUNCTION WHICH YOU CAN CALL TO OR PUT INTO A WHILE LOOP
         while(gameRunning == false){
             arena.pause();
             if(arena.letterPressed('r')){
@@ -212,10 +231,11 @@ public class Driver{
                 player1Text.setText(String.valueOf(p1score));
                 player2Text.setText(String.valueOf(p2score));
                 gameRunning = true;
-                }
+            }
+        }
         }
     }
-
+ 
     /**
 	 * Resets the GameArena and Table.
 	 *
