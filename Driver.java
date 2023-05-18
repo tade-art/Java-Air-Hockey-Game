@@ -47,7 +47,8 @@ public class Driver{
      * @param puck  The puck which is being used 
      * @param gameRunning   The flag which is being used to check if the game is running or not
      */
-    public static void runGame(GameArena arena, Table AHT, Mallet player1, Mallet player2, Puck puck,boolean gameRunning){
+    
+     public static void runGame(GameArena arena, Table AHT, Mallet player1, Mallet player2, Puck puck,boolean gameRunning){
         /**
          * Variables which are used within the phyics engine
          */
@@ -58,8 +59,8 @@ public class Driver{
         /**
          * Text Objects which are used to display game info
          */
-        int p1score = 5;
-        int p2score = 5;
+        int p1score = 0;
+        int p2score = 0;
         Text player1Text = new Text(String.valueOf(p1score), 50, 275, 650, "RED");
         Text player2Text = new Text(String.valueOf(p2score), 50, 700, 650, "RED");
         Text titleText = new Text("Welcome to Airhockey", 50, 200, 75, "RED");
@@ -78,7 +79,10 @@ public class Driver{
         */
         while(gameRunning){
                         
-                if(p1score ==6) {
+            /**
+             * Check statements to see if the end of the game has been reached 
+             */    
+            if(p1score ==6) {
                     gameRunning=false;
                     arena.addText(p1WinText);
                 }
@@ -125,37 +129,37 @@ public class Driver{
                 player2.moveMallet(constantSpeed, 0);
             }
 
-                    /**
-                    * Branch statements checking for collisions between player 1 and the borders
-                    */          
-                    if(player1.returnYPos() - 40 <= 124){
-                        player1.moveMallet(0, constantSpeed);
-                    }
-                    if(player1.returnYPos() + 40 >= 532){
-                        player1.moveMallet(0, -constantSpeed);
-                    }
-                    if(player1.returnXPos() -40 <=124){
-                        player1.moveMallet(constantSpeed, 0);
-                    }
-                    if(player1.returnXPos() +40 >=512){
-                        player1.moveMallet(-constantSpeed, 0);
-                    }
-        
-                    /**
-                    * Branch statements checking for collisions between player 2 and the borders
-                    */          
-                    if(player2.returnYPos() - 40 <= 124){
-                        player2.moveMallet(0, constantSpeed);
-                    }
-                    if(player2.returnYPos() + 40 >= 532){
-                        player2.moveMallet(0, -constantSpeed);
-                    }
-                    if(player2.returnXPos() -40 <=512){
-                        player2.moveMallet(constantSpeed, 0);
-                    }
-                    if(player2.returnXPos() +40 >=900){
-                        player2.moveMallet(-constantSpeed, 0);
-                    }
+            /**
+            * Branch statements checking for collisions between player 1 and the borders
+            */          
+            if(player1.returnYPos() - 40 <= 124){
+                player1.moveMallet(0, constantSpeed);
+            }
+            if(player1.returnYPos() + 40 >= 532){
+                player1.moveMallet(0, -constantSpeed);
+            }
+            if(player1.returnXPos() -40 <=124){
+                player1.moveMallet(constantSpeed, 0);
+            }
+            if(player1.returnXPos() +40 >=512){
+                player1.moveMallet(-constantSpeed, 0);
+            }
+
+            /**
+            * Branch statements checking for collisions between player 2 and the borders
+            */          
+            if(player2.returnYPos() - 40 <= 124){
+                player2.moveMallet(0, constantSpeed);
+            }
+            if(player2.returnYPos() + 40 >= 532){
+                player2.moveMallet(0, -constantSpeed);
+            }
+            if(player2.returnXPos() -40 <=512){
+                player2.moveMallet(constantSpeed, 0);
+            }
+            if(player2.returnXPos() +40 >=900){
+                player2.moveMallet(-constantSpeed, 0);
+            }
                     
             /**
             * Internal method used to move the puck via velocity with regards to friction
@@ -197,7 +201,37 @@ public class Driver{
             */ 
             if((puck.getYPosition()-40 >= 280 && puck.getYPosition()-40 <= 370) || (puck.getYPosition()+40 >= 280 && puck.getYPosition()+40 <=370)){                
                 if(puck.getXPosition() - 40 <= 115){
-                    velocity[0] = 0;
+                            /**
+            * Branch statements checking for collisions between player 1 and the borders
+            */          
+            if(player1.returnYPos() - 40 <= 124){
+                player1.moveMallet(0, constantSpeed);
+            }
+            if(player1.returnYPos() + 40 >= 532){
+                player1.moveMallet(0, -constantSpeed);
+            }
+            if(player1.returnXPos() -40 <=124){
+                player1.moveMallet(constantSpeed, 0);
+            }
+            if(player1.returnXPos() +40 >=512){
+                player1.moveMallet(-constantSpeed, 0);
+            }
+
+            /**
+            * Branch statements checking for collisions between player 2 and the borders
+            */          
+            if(player2.returnYPos() - 40 <= 124){
+                player2.moveMallet(0, constantSpeed);
+            }
+            if(player2.returnYPos() + 40 >= 532){
+                player2.moveMallet(0, -constantSpeed);
+            }
+            if(player2.returnXPos() -40 <=512){
+                player2.moveMallet(constantSpeed, 0);
+            }
+            if(player2.returnXPos() +40 >=900){
+                player2.moveMallet(-constantSpeed, 0);
+            }    velocity[0] = 0;
                     velocity[1] = 0;
                     
                     reset(AHT, puck, player1, player2, -1);
