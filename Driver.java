@@ -74,8 +74,8 @@ public class Driver{
         Text titleText = new Text("Welcome to Airhockey", 35, 125, 75, "RED");
         Text p1WinText = new Text("Player 1 Wins!",35,175,650,"RED");
         Text p2WinText = new Text("Player 2 Wins!", 35, 575, 650, "RED");
-        Text mute = new Text("Press M to unmute", 25, 400, 700, "RED");
-        Text unmute = new Text("Press M to mute", 25, 400, 700, "RED");
+        Text mute = new Text("Press M to mute", 25, 400, 700, "RED");
+        Text unmute = new Text("Press M to unmute", 25, 400, 700, "RED");
         boolean muteFlag = false;
 
 
@@ -92,7 +92,6 @@ public class Driver{
          */
          SoundPlayer sound = new SoundPlayer(null);
 
-         String fanfare = "fanfare.wav";
          String drumroll = "drumroll.wav";
          String bounce = "bounce.wav";
          String applause = "applause.wav";
@@ -107,13 +106,13 @@ public class Driver{
              */    
             if(p1score ==6) {
                     arena.addText(p1WinText);     
-                    sound.changePath(fanfare);
+                    sound.changePath(drumroll);
                     sound.play();
                     gameRunning=false;
                 }
                 else if(p2score == 6){
                     arena.addText(p2WinText); 
-                    sound.changePath(fanfare);
+                    sound.changePath(drumroll);
                     sound.play();
                     gameRunning = false;
                 }
@@ -159,16 +158,18 @@ public class Driver{
              * Miscellaneous Controls (Mute and Cheats)
              */
             if(arena.letterPressed('m')){
-                if(muteFlag == false){
-                    arena.removeText(mute);
-                    arena.addText(unmute);
+                if(muteFlag){
+                    arena.removeText(unmute);
+                    arena.addText(mute);
+                    
                     muteFlag=false;
                     sound.toggleMute();
                     arena.pause();
                 }
                 else{                    
-                    arena.removeText(unmute);
-                    arena.addText(mute);
+                    arena.removeText(mute);
+                    arena.addText(unmute);
+                    
                     muteFlag=true;
                     sound.toggleMute();
                     arena.pause();
