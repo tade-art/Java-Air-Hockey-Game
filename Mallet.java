@@ -59,6 +59,14 @@ public class Mallet{
         return yPos;
     }
 
+    /**
+     * Method to return the size of the mallet
+     */
+    public double returnSize(){
+        return this.size;
+    }
+
+
     /** 
      * Method to set the X Velocity of the Mallet
     */
@@ -78,6 +86,7 @@ public class Mallet{
      */
     public void setSize (double ns){
         this.mallet.setSize(ns);
+        this.size = ns;
     }
 
     /** 

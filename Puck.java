@@ -4,12 +4,12 @@
  */
 public class Puck{
 
-    private Ball puck = new Ball(0, 0, 50, "GREY",2);     //Create the Puck object
+    private Ball puck = new Ball(0, 0, 30, "GREY",2);     //Create the Puck object
     private double xPos = 0;
     private double yPos = 0;
     private double xSpeed = 0;
     private double ySpeed = 0;
-    private double size = 30;
+    private double size = 50;
 
     /**
      * Constructor Method
@@ -95,6 +95,7 @@ public class Puck{
      */
     public void setSize(double ds){
         this.puck.setSize(ds);
+        this.size = ds;
     }
 
     /**
