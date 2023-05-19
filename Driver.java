@@ -76,7 +76,13 @@ public class Driver{
         Text p2WinText = new Text("Player 2 Wins!", 35, 575, 650, "RED");
         Text mute = new Text("Press M to mute", 25, 400, 700, "RED");
         Text unmute = new Text("Press M to unmute", 25, 400, 700, "RED");
+        
+        /**
+         * Flags used throughout the code
+         */
         boolean muteFlag = false;
+        boolean puckSize = false;
+        boolean malletSize = false;
 
 
         /**
@@ -141,21 +147,21 @@ public class Driver{
             /**
             * Movement controls for Player 2
             */ 
-            if(arena.letterPressed('i')){
+            if(arena.upPressed()){
                 player2.moveMallet(0, -constantSpeed);
             }
-            if(arena.letterPressed('j')){
+            if(arena.leftPressed()){
                 player2.moveMallet(-constantSpeed, 0);
             }
-            if(arena.letterPressed('k')){
+            if(arena.downPressed()){
                 player2.moveMallet(0, constantSpeed);
             }
-            if(arena.letterPressed('l')){
+            if(arena.rightPressed()){
                 player2.moveMallet(constantSpeed, 0);
             }
 
             /**
-             * Miscellaneous Controls (Mute and Cheats)
+             * Code for mute button
              */
             if(arena.letterPressed('m')){
                 if(muteFlag){
@@ -175,6 +181,43 @@ public class Driver{
                     arena.pause();
                 }
                 
+                arena.pause();
+            }
+
+            /**
+             * Code for cheats
+             */
+            if(arena.letterPressed('u')){
+                if(puckSize){
+                    puck.setSize(85);
+                    puckSize = false;
+                    arena.pause();
+                }
+                
+                else{
+                    puck.setSize(30);
+                    puckSize = true;
+                    arena.pause();
+                }
+
+                arena.pause();
+            }
+
+            if(arena.letterPressed('i')){
+                if(malletSize){
+                    player1.setSize(30);
+                    player2.setSize(30);
+                    malletSize = false;
+                    arena.pause();
+                }
+
+                else{
+                    player1.setSize(80);
+                    player2.setSize(80);
+                    malletSize=true;
+                    arena.pause();
+                }
+
                 arena.pause();
             }
 

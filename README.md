@@ -14,7 +14,7 @@ Java was used for this assignement since it allows Object Orientation Programmin
 # Controls
 
 + Player 1 (Left Mallet) has access to movement through keys : W A S D
-+ Player 2 (Right Mallet) has access to movement through keys : I J K L
++ Player 2 (Right Mallet) has access to movement through arrow keys
 + Game can be restarted by pressing R once game has finished
 
 # Files contained

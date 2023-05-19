@@ -7,6 +7,7 @@ public class Mallet{
     private double yPos= 0;
     private double xVelo = 0;
     private double yVelo = 0;
+    private double size = 0;
 
     private Ball mallet = new Ball(0, 0, 80, "GREY", 1);         //Creating the Mallet
     
@@ -70,6 +71,13 @@ public class Mallet{
     */
     public void setYVelo(double y){
         yVelo = y;
+    }
+
+    /**
+     * Method to set the size of the mallet
+     */
+    public void setSize (double ns){
+        this.mallet.setSize(ns);
     }
 
     /** 
