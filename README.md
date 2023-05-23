@@ -13,9 +13,17 @@ Java was used for this assignement since it allows Object Orientation Programmin
 
 # Controls
 
-+ Player 1 (Left Mallet) has access to movement through keys : W A S D
-+ Player 2 (Right Mallet) has access to movement through arrow keys
-+ Game can be restarted by pressing R once game has finished
+The players have access to movement through the keys stated below: 
+
++ Player 1 (Left Mallet) has access to movement through keys : **W A S D**
++ Player 2 (Right Mallet) has access to movement through arrow keys: **UP DOWN LEFT RIGHT**
+
+Additionally, there are miscellaneous controls for the users:
+
++ Players can press toggle sound via pressing **M** to mute and unmute
++ Players can toggle the size of the Puck by pressing **U**
++ Players can toggle the size of the Mallet by pressing **I**
+
 
 # Files contained
 
@@ -31,6 +39,7 @@ This repository contains the following files for the SCC.110 project "Air Hockey
 + Puck.java
 + Table.java
 + Driver.java
++ SoundPlayer.java
 
 **Sound effects (.wav files)**
 + applause.wav
@@ -39,4 +48,4 @@ This repository contains the following files for the SCC.110 project "Air Hockey
 + fanfare.wav
 + hit.wav
 
-The folder **\docs** contains JavaDoc documentation. Click on *allclasses-index.html* to access the documentation.
+The folder **\doc** contains JavaDoc documentation. Click on *allclasses-index.html* to access the documentation.
