@@ -7,7 +7,7 @@ public class Mallet{
     private double yPos= 0;
     private double xVelo = 0;
     private double yVelo = 0;
-    private double size = 0;
+    private double size = 80;
 
     private Ball mallet = new Ball(0, 0, 80, "GREY", 1);         //Creating the Mallet
     
